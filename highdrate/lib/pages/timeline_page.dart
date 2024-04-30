@@ -60,7 +60,7 @@ class _TimelinePageState extends State<TimelinePage> {
               return AlertDialog(
                 backgroundColor: Theme.of(context).colorScheme.inversePrimary,
                 scrollable: true,
-                title: Text("Event Name"),
+                title: Text("Note"),
                 content: Padding(
                   padding: EdgeInsets.all(8),
                   child: TextField(
@@ -76,7 +76,7 @@ class _TimelinePageState extends State<TimelinePage> {
                       Navigator.of(context).pop();
                       _selectedEvents.value = _getEventsForDay(_selectedDay!);
                     }, 
-                    child: Text("Submit"),
+                    child: Text("Add"),
                   )
                 ],
               );
@@ -150,7 +150,7 @@ class _TimelinePageState extends State<TimelinePage> {
                 ),
                 child: ListTile(
                   onTap: () => print(""),
-                  title: Text('${value[index]}'),
+                  title: Text("${_eventController.text}"),
                   textColor: Theme.of(context).colorScheme.primary,
                 ),
               );

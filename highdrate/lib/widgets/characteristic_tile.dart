@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 
 import '../pages/home_page.dart';
+import '../pages/stats_page.dart';
 import "../utils/snackbar.dart";
 import "descriptor_tile.dart";
 
@@ -28,9 +29,17 @@ class CharacteristicTileState extends State<CharacteristicTile> {
   @override
   void initState() {
     super.initState();
+    characteristic.value = widget.characteristic;
     _lastValueSubscription =
         widget.characteristic.lastValueStream.listen((newValue) {
-      setState(() {value = newValue;});
+      setState(() {
+        value = newValue;
+        // String data = utf8.decode(value);
+        // double measurement = double.parse(data);
+        // if(measurement <= 22.606) {
+        //   measurementList.value.add(measurement);
+        // }
+      });
     });
   }
 
@@ -86,21 +95,24 @@ class CharacteristicTileState extends State<CharacteristicTile> {
 
   Widget buildValue(BuildContext context) {
     String data = utf8.decode(value);
-    try {
-      double measurement = double.parse(data);
-      List<double> copyList = List<double>.from(measurementList.value);
-      // double previousMeasurement = -1.0;
-      // if (copyList.isNotEmpty) {
-      //   previousMeasurement = copyList.last;
-      // }
-      if (measurement <= 22.606) {
-        copyList.add(measurement);
-      }
-      measurementList.value = copyList;
-      print(measurementList.value);
-    } catch (e) {
-      print(e);
-    }
+    // try {
+    //   double measurement = double.parse(data);
+    //   // List<double> copyList = List<double>.from(measurementList.value);
+    //   // double previousMeasurement = -1.0;
+    //   // if (copyList.isNotEmpty) {
+    //   //   previousMeasurement = copyList.last;
+    //   // }
+    //   if(measurementList.value.length > 10) {
+    //     measurementList.value.removeRange(0, measurementList.value.length - 10);
+    //   }
+    //   if (measurement <= 22.606) {
+    //     measurementList.value.add(measurement);
+    //   }
+    //   // measurementList.value = copyList;
+    //   print(measurementList.value);
+    // } catch (e) {
+    //   print(e);
+    // }
     return Text(data, style: const TextStyle(fontSize: 13, color: Colors.grey));
   }
 
@@ -133,6 +145,14 @@ class CharacteristicTileState extends State<CharacteristicTile> {
         });
   }
 
+  Widget buildStatsPageButton(BuildContext context) {
+    return TextButton(
+      onPressed: () {
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const StatsPage()));
+      }, 
+      child: const Text("Stats Page"));
+  }
+
   Widget buildButtonRow(BuildContext context) {
     bool read = widget.characteristic.properties.read;
     bool write = widget.characteristic.properties.write;
@@ -144,6 +164,7 @@ class CharacteristicTileState extends State<CharacteristicTile> {
         if (read) buildReadButton(context),
         if (write) buildWriteButton(context),
         if (notify || indicate) buildSubscribeButton(context),
+        buildStatsPageButton(context),
       ],
     );
   }

@@ -86,10 +86,9 @@ class _ScanScreenState extends State<ScanScreen> {
           success: false);
     });
     MaterialPageRoute route = MaterialPageRoute(
-        builder: (context) => DeviceScreen(device: device),
-        settings: const RouteSettings(name: '/DeviceScreen'));
-    // MaterialPageRoute(builder: (context) => const StatsPage())
-    Navigator.of(context).push(route);
+      builder: (context) => DeviceScreen(device: device),
+      settings: const RouteSettings(name: '/DeviceScreen'));
+      Navigator.of(context).push(route);
   }
 
   Future onRefresh() {
